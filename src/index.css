@@ -1,0 +1,20 @@
+@import "tailwindcss";
+@plugin './hero.ts';
+@source '../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
+@custom-variant dark (&:is(.dark *));
+
+.auth-input-base {
+  @apply gap-2;
+}
+
+.auth-input-label {
+  @apply text-[12px] text-[#8bb5b7];
+}
+
+.auth-input-wrapper {
+  @apply h-12 bg-[#07100f] border border-[#29403e] rounded-[11px] shadow-none hover:border-[#3cc1c4];
+}
+
+.auth-input {
+  @apply text-[13px] text-white placeholder:text-[#647d7c];
+}
