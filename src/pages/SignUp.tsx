@@ -34,7 +34,6 @@ export default function SignUp() {
       setTimeout(() => {
         navigate("/signin");
       }, 1000);
-      //
     } catch (error: any) {
       setErrMsg(error.response.data.message);
       setIsLoading(false);

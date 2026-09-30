@@ -1,9 +1,9 @@
 import { Button } from "@heroui/react";
 import { useContext } from "react";
-import { counterContext } from "../contexts/CounterContext";
+import { counterContext } from "../contexts/counterContext";
 
 export default function Profile() {
-  const { counter, setcounter } = useContext(counterContext);
+    const { counter, setcounter } = useContext(counterContext);
 
   return (
     <div>

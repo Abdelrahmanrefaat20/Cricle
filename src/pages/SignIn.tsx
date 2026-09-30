@@ -2,8 +2,8 @@ import { Alert, Button, Input } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
-import { authContext } from "../contexts/AuthContext";
+import { Link } from "react-router-dom";
+import { authContext } from "../contexts/authContext";
 import { signInSchema } from "../schemas/signInSchema";
 import { authServices } from "../services/authService";
 import type { LoginData } from "../types/loginDate";
@@ -13,9 +13,8 @@ export default function SignIn() {
   const [successMsg, setSuccessMsg] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
 
-  const { setisLoggedIn } = useContext(authContext);
+  const { setIsLoggedIn } = useContext(authContext);
   const {
     handleSubmit,
     register,
@@ -38,7 +37,7 @@ export default function SignIn() {
       setIsLoading(false);
 
       // navigate("/");
-      setisLoggedIn(true);
+      setIsLoggedIn(true);
     } catch (error: any) {
       setErrMsg(error.response.data.message);
       setIsLoading(false);

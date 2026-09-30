@@ -3,8 +3,8 @@ import { RouterProvider } from "react-router-dom";
 import "./App.css";
 import { router } from "./routes/AppRoutes";
 import ProtectedRoute from "./protectedRoutes/ProtectedRoute";
-import CounterContextProvider from "./contexts/CounterContext";
-import AuthContextProvider from "./contexts/AuthContext";
+import CounterContextProvider from "./contexts/counterContext";
+import AuthContextProvider from "./contexts/authContext";
 
 function App() {
   return (
