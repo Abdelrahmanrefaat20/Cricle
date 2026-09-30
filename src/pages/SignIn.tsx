@@ -1,12 +1,13 @@
 import { Alert, Button, Input } from "@heroui/react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import getInputProps from "../utils/Helpers";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { authServices } from "../services/authService";
+import { authContext } from "../contexts/AuthContext";
 import { signInSchema } from "../schemas/signInSchema";
+import { authServices } from "../services/authService";
 import type { LoginData } from "../types/loginDate";
+import getInputProps from "../utils/Helpers";
 
 export default function SignIn() {
   const [successMsg, setSuccessMsg] = useState("");
@@ -14,6 +15,7 @@ export default function SignIn() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  const { setisLoggedIn } = useContext(authContext);
   const {
     handleSubmit,
     register,
@@ -29,12 +31,14 @@ export default function SignIn() {
 
     try {
       const data = await authServices.signIn(values);
+      console.log(data.data.token);
+      localStorage.setItem("token", data.data.token);
 
       setSuccessMsg(data.message);
       setIsLoading(false);
-      setTimeout(() => {
-        navigate("/");
-      }, 1000);
+
+      // navigate("/");
+      setisLoggedIn(true);
     } catch (error: any) {
       setErrMsg(error.response.data.message);
       setIsLoading(false);
@@ -66,12 +70,12 @@ export default function SignIn() {
               {...getInputProps("email", "Email or username")}
               isInvalid={!!errors.email?.message}
               errorMessage={errors.email?.message as string}
-         classNames={{
-  base: "auth-input-base",
-  label: "auth-input-label",
-  inputWrapper: "auth-input-wrapper",
-  input: "auth-input",
-}}
+              classNames={{
+                base: "auth-input-base",
+                label: "auth-input-label",
+                inputWrapper: "auth-input-wrapper",
+                input: "auth-input",
+              }}
             />
 
             <Input
@@ -79,12 +83,12 @@ export default function SignIn() {
               {...getInputProps("password", "Password")}
               isInvalid={!!errors.password?.message}
               errorMessage={errors.password?.message as string}
-           classNames={{
-  base: "auth-input-base",
-  label: "auth-input-label",
-  inputWrapper: "auth-input-wrapper",
-  input: "auth-input",
-}}
+              classNames={{
+                base: "auth-input-base",
+                label: "auth-input-label",
+                inputWrapper: "auth-input-wrapper",
+                input: "auth-input",
+              }}
             />
 
             <Button

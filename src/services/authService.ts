@@ -22,6 +22,18 @@ class AuthServices {
         );
         return data;
     }
+async getUserData() {
+  const { data } = await axios.get(
+    "https://route-posts.routemisr.com/users/profile-data",
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
+  );
+
+  return data;
+}
 
 
 }
