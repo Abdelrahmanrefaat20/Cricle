@@ -4,7 +4,7 @@ import SignUp from "../pages/SignUp";
 import SignIn from "../pages/SignIn";
 import MainLayout from "../layouts/MainLayout";
 import Feed from "../pages/Feed";
-import Profile from "../pages/Profile";
+import Profile from "../pages/profile/Profile";
 import NotFound from "../pages/NotFound";
 import ProtectedRoute from "../protectedRoutes/ProtectedRoute";
 import ProtectedAuthRoute from "../protectedRoutes/ProtectedAuthRoute";

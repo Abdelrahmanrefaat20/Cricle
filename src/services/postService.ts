@@ -63,7 +63,7 @@ async sharePost(post: PostI) {
   const { data } = await axios.post(
     `https://route-posts.routemisr.com/posts`,
     {
-body: `Shared @${post.user.username} ${ post.body ? post.body : ""}`,    },
+body: `Shared @${post.user.username} ${ post.body ?  post.body : ""}`,    },
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -73,6 +73,38 @@ body: `Shared @${post.user.username} ${ post.body ? post.body : ""}`,    },
 
   return data;
 }
+
+async whoToFollow() {
+  const { data } = await axios.get(
+    "https://route-posts.routemisr.com/users/suggestions?limit=10",
+    {
+      headers: {  
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
+  );
+
+  return data;
+
+}
+
+
+
+
+
+async followUser(userId: string) {
+  const { data } = await axios.post(
+    `https://route-posts.routemisr.com/users/${userId}/follow`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
+  );
+}
+
+
 }
  const postsService = new PostsService();
  export default postsService;       

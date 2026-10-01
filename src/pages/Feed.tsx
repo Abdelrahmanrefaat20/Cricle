@@ -5,6 +5,7 @@ import { div } from "framer-motion/client";
 import Post from "../components/Post/Post";
 import CreatePost from "../components/Post/CreatePost";
 import { counterContext } from "../contexts/counterContext";
+import WhoToFollow from "./WhoToFollow";
 
 export default function Feed() {
   const [posts, setposts] = useState<PostI[]>([]);
@@ -12,6 +13,7 @@ export default function Feed() {
   useEffect(() => {
     // get posts
     getAllPosts();
+    whoToFollow();
   }, []);
   async function getAllPosts() {
     const { data } = await postsService.getAllPosts();
@@ -23,7 +25,7 @@ export default function Feed() {
     getAllPosts();
   }
 
-  const { liked, setLiked } = useContext(counterContext);
+  const { bookmarked, setBookmarked , suggestions, setSuggestions ,liked, setLiked , follow, setFollow} = useContext(counterContext);
 
   async function likePost(postId: string) {
     const response = await postsService.likePost(postId);
@@ -34,7 +36,6 @@ export default function Feed() {
     );
     getAllPosts();
   }
-  const { bookmarked, setBookmarked } = useContext(counterContext);
   async function bookMark(postId: string) {
     const response = await postsService.bookMark(postId);
     setBookmarked((prev: string[]) =>
@@ -46,31 +47,53 @@ export default function Feed() {
   }
 
   const handleShare = async (post: PostI) => {
-  try {
-    await postsService.sharePost(post);
+    try {
+      await postsService.sharePost(post);
+      getAllPosts();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  async function whoToFollow() {
+    const response = await postsService.whoToFollow();
+    setSuggestions(response.data.suggestions);
     getAllPosts();
-  } catch (error) {
-    console.error(error);
   }
-};
+
+  async function handleFollow(suggestionId: string) {
+    const response = await postsService.followUser(suggestionId);
+    setFollow((prev) => [...prev, response.data.user]);
+  } 
 
   return (
     <>
-      <div>
-        <h1>Feed</h1>
+      <div className="min-h-screen bg-[#091412] px-4 py-5">
+        <div className="mx-auto grid max-w-275 grid-cols-1 gap-3 lg:grid-cols-[1fr_100px]">
+          {/* Posts */}
+          <main className="min-w-0">
+            <h1 className="mb-4 text-xl font-bold text-white fixed">Feed</h1>                               
 
-        <CreatePost getAllPosts={getAllPosts} />
+            <CreatePost getAllPosts={getAllPosts} />
 
-        <div className=" grid gap-4">
-          {posts.map((post) => (
-            <Post
-              post={post}
-              deletePost={deletePost}
-              likePost={likePost}
-              bookMark={bookMark}
-              sharePost={handleShare}
-            />
-          ))}
+            <div className="mt-4 grid gap-4">
+              {posts.map((post) => (
+                <Post
+                  key={post._id}
+                  post={post}
+                  deletePost={deletePost}
+                  likePost={likePost}
+                  bookMark={bookMark}
+                  sharePost={handleShare}
+                />
+              ))}
+            </div>
+          </main>
+
+          {/* Right sidebar */}
+          <aside className="hidden lg:block">
+            <WhoToFollow suggestions={suggestions} handleFollow={handleFollow} follow={follow} />
+          </aside>
         </div>
       </div>
     </>
