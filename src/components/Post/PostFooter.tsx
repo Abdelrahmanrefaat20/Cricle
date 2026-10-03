@@ -14,8 +14,8 @@ export default function PostFooter({
   bookMark: any;
   sharePost: (post: PostI) => void;
 }) {
-  const { liked, setLiked } = useContext(counterContext);
-  const { bookmarked, setBookmarked } = useContext(counterContext);
+  const { liked } = useContext(counterContext);
+  const { bookmarked  } = useContext(counterContext);
   return (
     <div className="ml-[55px] mt-4 flex items-center gap-7 text-[#8ca9a7]">
       <button

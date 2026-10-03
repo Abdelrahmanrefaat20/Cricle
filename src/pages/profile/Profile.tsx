@@ -1,12 +1,11 @@
 import { useContext, useEffect, useState } from "react";
+import Post from "../../components/Post/Post";
 import { counterContext } from "../../contexts/counterContext";
 import type { PostI } from "../../interfaces/postI";
-import profileService from "../../services/profileService";
-import ProfileHeader from "./ProfileHeader";
 import { authServices } from "../../services/authService";
 import postsService from "../../services/postService";
-import Post from "../../components/Post/Post";
-import { any } from "zod/v4";
+import profileService from "../../services/profileService";
+import ProfileHeader from "./ProfileHeader";
 
 export default function Profile() {
   const { profile, setProfile } = useContext(counterContext);
@@ -38,23 +37,17 @@ export default function Profile() {
     getUserPosts();
   }, [profile?.id]);
   const {
-    bookmarked,
     setBookmarked,
-    suggestions,
-    setSuggestions,
-    liked,
     setLiked,
-    follow,
-    setFollow,
   } = useContext(counterContext);
 
   async function deletePost(postId: string) {
-    const response = await postsService.deletePost(postId);
+     await postsService.deletePost(postId);
     getUserPosts();
   }
 
   async function likePost(postId: string) {
-    const response = await postsService.likePost(postId);
+     await postsService.likePost(postId);
     setLiked((prev: string[]) =>
       !prev.includes(postId)
         ? [...prev, postId]
@@ -63,7 +56,7 @@ export default function Profile() {
     getUserPosts();
   }
   async function bookMark(postId: string) {
-    const response = await postsService.bookMark(postId);
+     await postsService.bookMark(postId);
     setBookmarked((prev: string[]) =>
       !prev.includes(postId)
         ? [...prev, postId]

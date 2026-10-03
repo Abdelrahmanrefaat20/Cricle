@@ -3,10 +3,8 @@ import type { SuggestionI } from "../interfaces/SuggestionI";
 
 export default function WhoToFollow({
   suggestions,
-  follow,
 }: {
   suggestions: SuggestionI[];
-  follow: SuggestionI[];
 }) {
   return (
     <div className="fixed top-5 rounded-2xl border border-[#243a38] bg-[#0e1d1b] p-4 mt-20">

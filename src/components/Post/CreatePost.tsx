@@ -42,7 +42,7 @@ export default function CreatePost({ getAllPosts }: { getAllPosts: any }) {
       formData.set("image", imgfile);
     }
 
-    const response = await postsService.createPost(formData);
+     await postsService.createPost(formData);
 
     removeFile();
     setCaption("");

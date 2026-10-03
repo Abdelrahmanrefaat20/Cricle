@@ -1,4 +1,4 @@
-import { Avatar, Button, Input } from "@heroui/react";
+import { Button, Input } from "@heroui/react";
 import { Heart } from "lucide-react";
 import type { CommentI } from "../interfaces/commentI";
 
