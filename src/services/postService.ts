@@ -102,6 +102,7 @@ async followUser(userId: string) {
       },
     }
   );
+  return data;
 }
 
 

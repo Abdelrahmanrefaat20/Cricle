@@ -47,7 +47,7 @@ export default function Comment({ comment }: { comment: CommentI }) {
 
             {/* Nested Reply */}
             {<></>}
-            <div className="ml-13 mt-4 flex gap-3">
+            {/* <div className="ml-13 mt-4 flex gap-3">
               <Avatar
                 name="L"
                 className="h-8 w-8 shrink-0 bg-[#7654d8] text-[13px] text-white"
@@ -69,7 +69,7 @@ export default function Comment({ comment }: { comment: CommentI }) {
                   <span>1</span>
                 </button>
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* Add Comment */}

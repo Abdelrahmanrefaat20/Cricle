@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
-import type { PostI } from "../../interfaces/postI";
 import { Bookmark, Heart, MessageCircle, Share2 } from "lucide-react";
+import { useContext } from "react";
 import { counterContext } from "../../contexts/counterContext";
+import type { PostI } from "../../interfaces/postI";
 
 export default function PostFooter({
   post,

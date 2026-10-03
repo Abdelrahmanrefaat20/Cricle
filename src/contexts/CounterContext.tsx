@@ -12,6 +12,7 @@ export default function CounterContextProvider({
   const [bookmarked, setBookmarked] = useState<string[]>([]);
   const [suggestions, setSuggestions] = useState<SuggestionI[]>([]);
   const [follow, setFollow] = useState<SuggestionI[]>([]);
+  const [profile, setProfile] = useState<any>(null);
   return (
     <counterContext.Provider
       value={{
@@ -25,6 +26,8 @@ export default function CounterContextProvider({
         setSuggestions,
         follow,
         setFollow,
+        profile,
+        setProfile,
       }}
     >
       {children}

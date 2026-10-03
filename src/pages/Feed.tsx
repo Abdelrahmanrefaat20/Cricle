@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import postsService from "../services/postService";
 import type { PostI } from "../interfaces/postI";
-import { div } from "framer-motion/client";
 import Post from "../components/Post/Post";
 import CreatePost from "../components/Post/CreatePost";
 import { counterContext } from "../contexts/counterContext";
@@ -61,10 +60,10 @@ export default function Feed() {
     getAllPosts();
   }
 
-  async function handleFollow(suggestionId: string) {
-    const response = await postsService.followUser(suggestionId);
-    setFollow((prev) => [...prev, response.data.user]);
-  } 
+  // async function handleFollow(suggestionId: string) {
+  //   const response = await postsService.followUser(suggestionId);
+  //   setFollow((prev) => [...prev, response.data.user]);
+  // } 
 
   return (
     <>
@@ -92,7 +91,7 @@ export default function Feed() {
 
           {/* Right sidebar */}
           <aside className="hidden lg:block">
-            <WhoToFollow suggestions={suggestions} handleFollow={handleFollow} follow={follow} />
+            <WhoToFollow suggestions={suggestions} /*handleFollow={handleFollow}*/  follow={follow} />
           </aside>
         </div>
       </div>

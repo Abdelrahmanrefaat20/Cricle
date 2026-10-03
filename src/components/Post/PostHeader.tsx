@@ -1,8 +1,8 @@
-import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Button } from "@heroui/react";
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@heroui/react";
 import { Ellipsis } from "lucide-react";
-import type { PostI } from "../../interfaces/postI";
-import { authContext } from "../../contexts/authContext";
 import { useContext } from "react";
+import { authContext } from "../../contexts/authContext";
+import type { PostI } from "../../interfaces/postI";
 
 export default function PostHeader({ post, deletePost }: { post: PostI; deletePost: (postId: string) => void }) {
 

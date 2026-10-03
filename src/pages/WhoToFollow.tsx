@@ -1,13 +1,11 @@
-import { Avatar, Button } from "@heroui/react";
+import { Button } from "@heroui/react";
 import type { SuggestionI } from "../interfaces/SuggestionI";
 
 export default function WhoToFollow({
   suggestions,
-  handleFollow,
   follow,
 }: {
   suggestions: SuggestionI[];
-  handleFollow: (suggestionId: string) => void;
   follow: SuggestionI[];
 }) {
   return (
@@ -43,7 +41,7 @@ export default function WhoToFollow({
             <Button
               size="sm"
               radius="full"
-              onPress={() => handleFollow(suggestion._id)}
+              // onPress={() => handleFollow(suggestion._id)}
               className={
                 suggestion.following
                   ? "h-9 min-w-27 border border-[#29403e] bg-transparent px-4 text-[13px] font-semibold text-[#d7e2e0]"
