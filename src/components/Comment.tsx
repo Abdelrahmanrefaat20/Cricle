@@ -1,15 +1,68 @@
-import { Button, Input } from "@heroui/react";
-import { Heart } from "lucide-react";
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Input,
+} from "@heroui/react";
+import { useContext, useState } from "react";
 import type { CommentI } from "../interfaces/commentI";
+import { Ellipsis } from "lucide-react";
+import { authContext } from "../contexts/authContext";
 
-export default function Comment({ comment }: { comment: CommentI }) {
+export default function Comment({
+  comment,
+  createComment,
+  post,
+  deleteComment,
+  editComment,
+}: {
+  comment: CommentI;
+  createComment: (postId: string, formData: FormData) => Promise<void>;
+  post: any;
+  deleteComment: (postId: string, commentId: string) => Promise<any>;
+  editComment: (
+    postId: string,
+    commentId: string,
+    formData: FormData,
+  ) => Promise<any>;
+}) {
+  const { userData } = useContext(authContext);
+
+  const [commentContent, setcommentContent] = useState("");
+  const [commentContentEdit, setCommentContentEdit] = useState(
+    comment?.content || "",
+  );
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingCommentEdit, setIsLoadingCommentEdit] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+
+  async function handelCreateComment(e: any) {
+    e.preventDefault();
+    setIsLoading(true);
+    const formData = new FormData();
+    formData.set("content", commentContent);
+    await createComment(post._id, formData);
+    setIsLoading(false);
+    setcommentContent("");
+  }
+
+  async function handelEditComment(e: any) {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.set("content", commentContentEdit);
+    setIsLoadingCommentEdit(true);
+    await editComment(post._id, comment._id, formData);
+    setEditMode(false);
+    setIsLoadingCommentEdit(false);
+  }
   return (
-    
     <>
       {comment && (
         <>
-          <div className="my-4 ml-14 border-t border-[#243a38]" />
-          <div className="ml-13">
+          <div className="  my-4 ml-14 border-t border-[#243a38]" />
+          <div className=" relative ml-13">
             <div className="flex gap-3">
               <img
                 src={comment.commentCreator.photo}
@@ -28,22 +81,101 @@ export default function Comment({ comment }: { comment: CommentI }) {
                   </span>
                 </div>
 
-                <p className="mt-0.5 text-[14px] leading-5 text-white">
-                  {comment.content}
-                </p>
+                {!editMode ? (
+                  <p className="mt-0.5 text-[14px] leading-5 text-white">
+                    {comment.content}
+                  </p>
+                ) : (
+                  <>
+                    <form
+                      onSubmit={handelEditComment}
+                      className="ml-14 mt-4 flex items-center gap-3"
+                    >
+                      <Input
+                        placeholder="Edit a comment"
+                        variant="bordered"
+                        radius="lg"
+                        value={commentContentEdit}
+                        onChange={(e) => setCommentContentEdit(e.target.value)}
+                        classNames={{
+                          base: "auth-input-base",
+                          label: "auth-input-label",
+                          inputWrapper: "auth-input-wrapper",
+                          input: "auth-input",
+                        }}
+                      />
+
+                      <Button
+                        type="submit"
+                        isLoading={isLoadingCommentEdit}
+                        disabled={commentContentEdit.trim().length < 2}
+                        className="h-10 min-w-19 rounded-full bg-[#39c2c6] px-5 text-[13px] font-semibold text-[#07100f] hover:bg-[#46d0d3]"
+                      >
+                        Edit
+                      </Button>
+
+                      <Button
+                        type="button"
+                        onPress={() => {
+                          setEditMode(false);
+                          setCommentContentEdit(comment.content);
+                        }}
+                        className="h-10 min-w-19 rounded-full bg-red-700 px-5 text-[13px] font-semibold text-[#07100f] hover:bg-red-900"
+                      >
+                        Cancel
+                      </Button>
+                    </form>
+                  </>
+                )}
 
                 <div className="mt-2 flex flex-col gap-2">
-                  <button className="flex w-fit items-center gap-1 text-[12px] text-[#769694] hover:text-[#38c5ca]">
+                  {/* <button className="flex w-fit items-center gap-1 text-[12px] text-[#769694] hover:text-[#38c5ca]">
                     <Heart size={13} />
                     <span>{comment.likes}</span>
-                  </button>
-
+                  </button> */}
+                  {/* 
                   <button className="w-fit text-[13px] text-[#7da19e] hover:text-[#38c5ca]">
                     Reply
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>
+
+            {comment.commentCreator._id === userData._id && (
+              <Dropdown
+                placement="bottom-end"
+                className=" bg-[#0e1d1b] border border-[#243a38] text-white overflow-hidden"
+              >
+                <DropdownTrigger>
+                  <Button
+                    isIconOnly
+                    variant="light"
+                    radius="full"
+                    className="absolute right-0 top-0 h-8 w-8 min-w-8 text-[#78908e] hover:bg-[#172825] hover:text-white"
+                  >
+                    <Ellipsis size={20} />
+                  </Button>
+                </DropdownTrigger>
+
+                <DropdownMenu
+                  aria-label="Post actions"
+                  // onAction={handleAction}
+                >
+                  <DropdownItem key="edit" onClick={() => setEditMode(true)}>
+                    Edit
+                  </DropdownItem>
+
+                  <DropdownItem
+                    key="delete"
+                    color="danger"
+                    className="text-danger"
+                    onClick={() => deleteComment(post._id, comment._id)}
+                  >
+                    Delete
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            )}
 
             {/* Nested Reply */}
             {<></>}
@@ -73,26 +205,38 @@ export default function Comment({ comment }: { comment: CommentI }) {
           </div>
 
           {/* Add Comment */}
-
-          <div className="ml-14 mt-4 flex items-center gap-3">
-            <Input
-              placeholder="Write a comment"
-              variant="bordered"
-              radius="lg"
-              classNames={{
-                base: "auth-input-base",
-                label: "auth-input-label",
-                inputWrapper: "auth-input-wrapper",
-                input: "auth-input",
-              }}
-            />
-
-            <Button className="h-10 min-w-19 bg-[#39c2c6] px-5 text-[13px] font-semibold text-[#07100f] hover:bg-[#46d0d3] rounded-full">
-              Send
-            </Button>
-          </div>
         </>
       )}
+      <div>
+        <form
+          onSubmit={handelCreateComment}
+          className="ml-14 mt-4 flex items-center gap-3"
+        >
+          <Input
+            placeholder="Write a comment"
+            variant="bordered"
+            radius="lg"
+            value={commentContent}
+            onChange={(e) => setcommentContent(e.target.value)}
+            classNames={{
+              base: "auth-input-base",
+              label: "auth-input-label",
+              inputWrapper: "auth-input-wrapper",
+              input: "auth-input",
+            }}
+          />
+
+          <Button
+            disabled={commentContent.trim().length < 2}
+            type="submit"
+            isLoading={isLoading}
+            onPress={handelCreateComment}
+            className="h-10 min-w-19 bg-[#39c2c6] px-5 text-[13px] font-semibold text-[#07100f] hover:bg-[#46d0d3] rounded-full"
+          >
+            Send
+          </Button>
+        </form>
+      </div>
     </>
   );
 }

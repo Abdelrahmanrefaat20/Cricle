@@ -13,9 +13,9 @@ import {
 } from "@heroui/react";
 import { Ellipsis, ImagePlus } from "lucide-react";
 import { useState } from "react";
-import profileService, {
-  type ChangePasswordData,
-} from "../../services/profileService";
+import type { ChangePasswordData } from "../../types/loginDate";
+import profileService from "../../services/profileService";
+
 
 export default function ProfileHeader({
   profile,

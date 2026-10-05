@@ -6,6 +6,7 @@ import { authServices } from "../../services/authService";
 import postsService from "../../services/postService";
 import profileService from "../../services/profileService";
 import ProfileHeader from "./ProfileHeader";
+import commentService from "../../services/commentsServices";
 
 export default function Profile() {
   const { profile, setProfile } = useContext(counterContext);
@@ -36,18 +37,15 @@ export default function Profile() {
   useEffect(() => {
     getUserPosts();
   }, [profile?.id]);
-  const {
-    setBookmarked,
-    setLiked,
-  } = useContext(counterContext);
+  const { setBookmarked, setLiked } = useContext(counterContext);
 
   async function deletePost(postId: string) {
-     await postsService.deletePost(postId);
+    await postsService.deletePost(postId);
     getUserPosts();
   }
 
   async function likePost(postId: string) {
-     await postsService.likePost(postId);
+    await postsService.likePost(postId);
     setLiked((prev: string[]) =>
       !prev.includes(postId)
         ? [...prev, postId]
@@ -56,7 +54,7 @@ export default function Profile() {
     getUserPosts();
   }
   async function bookMark(postId: string) {
-     await postsService.bookMark(postId);
+    await postsService.bookMark(postId);
     setBookmarked((prev: string[]) =>
       !prev.includes(postId)
         ? [...prev, postId]
@@ -73,9 +71,21 @@ export default function Profile() {
       console.error(error);
     }
   };
+  async function createComment(postId: string, formData: FormData) {
+    await commentService.createComment(postId, formData);
+  }
+  async function deleteComment(postId: string, commentId: string) {
+    await commentService.deleteComment(postId, commentId);
+  }
 
-
-
+  async function editComment(
+    postId: string,
+    commentId: string,
+    formData: FormData,
+  ) {
+    await commentService.editComment(postId, commentId, formData);
+    await getUserPosts();
+  }
   return (
     <div className="mx-auto mt-5 min-h-screen w-full max-w-275 px-4">
       <ProfileHeader profile={profile} />
@@ -89,6 +99,9 @@ export default function Profile() {
             likePost={likePost}
             bookMark={bookMark}
             sharePost={handleShare}
+            createComment={createComment}
+            deleteComment={deleteComment}
+            editComment={editComment}
           />
         ))}
       </div>

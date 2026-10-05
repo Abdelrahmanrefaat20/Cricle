@@ -4,9 +4,6 @@ import type { LoginData } from "../types/loginDate";
 
 
 class AuthServices {
-
-
-
     async signUp(registerData: RegisterData) {
         const { data } = await axios.post(
             "https://route-posts.routemisr.com/users/signup",

@@ -5,6 +5,7 @@ import Post from "../components/Post/Post";
 import CreatePost from "../components/Post/CreatePost";
 import { counterContext } from "../contexts/counterContext";
 import WhoToFollow from "./WhoToFollow";
+import commentService from "../services/commentsServices";
 
 export default function Feed() {
   const [posts, setposts] = useState<PostI[]>([]);
@@ -65,13 +66,28 @@ export default function Feed() {
   //   setFollow((prev) => [...prev, response.data.user]);
   // } 
 
+
+  async function  createComment( postId: string, formData: FormData) {
+    await commentService.createComment(postId, formData);
+         getAllPosts();
+
+  }
+
+  async function deleteComment(postId: string , commentId:string) {
+    await commentService.deleteComment(postId,commentId)
+     getAllPosts();
+  }
+  async function editComment(postId: string ,  commentId:string , formData:FormData) {
+    await commentService.editComment(postId,commentId , formData)
+   await  getAllPosts();
+  }
+
   return (
     <>
       <div className="min-h-screen bg-[#091412] px-4 py-5">
         <div className="mx-auto grid max-w-275 grid-cols-1 gap-3 lg:grid-cols-[1fr_100px]">
           {/* Posts */}
           <main className="min-w-0">
-            <h1 className="mb-4 text-xl font-bold text-white fixed">Feed</h1>                               
 
             <CreatePost getAllPosts={getAllPosts} />
 
@@ -84,8 +100,11 @@ export default function Feed() {
                   likePost={likePost}
                   bookMark={bookMark}
                   sharePost={handleShare}
+                  createComment={createComment}
+                  deleteComment={deleteComment}
+                  editComment={editComment}
                 />
-              ))}
+              ))}                             
             </div>
           </main>
 

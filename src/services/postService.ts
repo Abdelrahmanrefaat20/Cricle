@@ -1,10 +1,11 @@
 import axios from "axios";
 import type { PostI } from "../interfaces/postI";
+import type { GetPostsResponse } from "../types/respone";
 
 class PostsService{
      
 
-    async getAllPosts() {
+    async getAllPosts() : Promise<GetPostsResponse> {
         const { data } = await axios.get("https://route-posts.routemisr.com/posts", {
             headers: {
                 token: localStorage.getItem("token")

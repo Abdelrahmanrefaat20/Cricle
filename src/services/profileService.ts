@@ -1,8 +1,6 @@
 import axios from "axios";
-export interface ChangePasswordData {
-  password: string;
-  newPassword: string;
-}
+import type { ChangePasswordData } from "../types/loginDate";
+
 class ProfileService {
 
 

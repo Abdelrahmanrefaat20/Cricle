@@ -8,6 +8,7 @@ import { signInSchema } from "../schemas/signInSchema";
 import { authServices } from "../services/authService";
 import type { LoginData } from "../types/loginDate";
 import getInputProps from "../utils/Helpers";
+import axios from "axios";
 
 export default function SignIn() {
   const [successMsg, setSuccessMsg] = useState("");
@@ -43,6 +44,32 @@ export default function SignIn() {
       setIsLoading(false);
     }
   }
+
+
+
+  //   async function signIn(values: any) {
+  //   console.log("///////////////////////////////////")
+  //   setErrMsg("");
+  //   setSuccessMsg("");
+  //   setIsLoading(true);
+  //   try {
+  //     const {data} = await axios.post(
+  //       "https://route-posts.routemisr.com/users/signin",
+        
+  //       values,
+  //     );
+  //     localStorage.setItem("token", data.data.token);
+  //     console.log("Full Response:", data);
+  //     console.log(data.data.token);
+  //     setIsLoggedIn(true)
+  //     setSuccessMsg(data.message);
+  //     setIsLoading(false);
+  //     // navigate("/");
+  //   } catch (error: any) {
+  //     setErrMsg(error.response.data.message);
+  //     setIsLoading(false);
+  //   }
+  // }
 
   return (
     <main className="min-h-screen bg-[#07100f] text-white flex items-center justify-center px-5">

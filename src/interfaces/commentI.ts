@@ -6,6 +6,9 @@ export interface CommentI {
     commentCreator: UserI;
     post: string;
     parentComment: null;
-    likes: number;
+    likes: unknown[];
     createdAt: string;
+    likesCount: number;
+    isReply: boolean;
+    id: string;
 }
