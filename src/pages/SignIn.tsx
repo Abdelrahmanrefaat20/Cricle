@@ -8,7 +8,6 @@ import { signInSchema } from "../schemas/signInSchema";
 import { authServices } from "../services/authService";
 import type { LoginData } from "../types/loginDate";
 import getInputProps from "../utils/Helpers";
-import axios from "axios";
 
 export default function SignIn() {
   const [successMsg, setSuccessMsg] = useState("");
