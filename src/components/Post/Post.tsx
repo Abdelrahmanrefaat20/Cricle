@@ -1,5 +1,7 @@
 import type { PostI } from "../../interfaces/postI";
 import Comment from "../Comment";
+import CommentFooter from "../CommentFooter";
+import type { CommentI } from "./../../interfaces/commentI";
 import PostFooter from "./PostFooter";
 import PostHeader from "./PostHeader";
 
@@ -12,6 +14,7 @@ export default function Post({
   createComment,
   deleteComment,
   editComment,
+  comments,
 }: {
   post: PostI;
   deletePost: (postId: string) => void;
@@ -25,6 +28,7 @@ export default function Post({
     commentId: string,
     formData: FormData,
   ) => Promise<any>;
+  comments?: CommentI[];
 }) {
   return (
     <article className="w-full max-w-138 rounded-2xl border border-[#243a38] bg-[#0e1d1b] p-4 text-white mx-auto">
@@ -40,14 +44,28 @@ export default function Post({
         sharePost={sharePost}
       />
 
-      {/* Comment */}
-      <Comment
-        comment={post.topComment}
-        createComment={createComment}
-        post={post}
-        deleteComment={deleteComment}
-        editComment={editComment}
-      />
+        <CommentFooter postId={post._id}  createComment={createComment}/>
+
+      {comments && comments.length > 0
+        ? comments.map((comment) => (
+            <Comment
+              key={comment._id}
+              comment={comment}
+              createComment={createComment}
+              post={post}
+              deleteComment={deleteComment}
+              editComment={editComment}
+            />
+          ))
+        : post.topComment && (
+            <Comment
+              comment={post.topComment}
+              createComment={createComment}
+              post={post}
+              deleteComment={deleteComment}
+              editComment={editComment}
+            />
+          )}
     </article>
   );
 }

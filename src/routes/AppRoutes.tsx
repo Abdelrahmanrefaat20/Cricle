@@ -8,6 +8,7 @@ import Profile from "../pages/profile/Profile";
 import NotFound from "../pages/NotFound";
 import ProtectedRoute from "../protectedRoutes/ProtectedRoute";
 import ProtectedAuthRoute from "../protectedRoutes/ProtectedAuthRoute";
+import PostDetilas from "../components/Post/PostDetilas";
 
 export const router = createHashRouter([
   {
@@ -35,6 +36,14 @@ export const router = createHashRouter([
         element: (
           <ProtectedRoute>
             <Profile />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "posts/:postId",
+        element: (
+          <ProtectedRoute>
+            <PostDetilas />
           </ProtectedRoute>
         ),
       },

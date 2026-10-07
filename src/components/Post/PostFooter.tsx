@@ -2,6 +2,7 @@ import { Bookmark, Heart, MessageCircle, Share2 } from "lucide-react";
 import { useContext } from "react";
 import { counterContext } from "../../contexts/counterContext";
 import type { PostI } from "../../interfaces/postI";
+import { useNavigate } from "react-router-dom";
 
 export default function PostFooter({
   post,
@@ -16,6 +17,8 @@ export default function PostFooter({
 }) {
   const { liked } = useContext(counterContext);
   const { bookmarked  } = useContext(counterContext);
+  const navigate = useNavigate();
+
   return (
     <div className="ml-[55px] mt-4 flex items-center gap-7 text-[#8ca9a7]">
       <button
@@ -34,7 +37,7 @@ export default function PostFooter({
         <span>{post.likesCount}</span>
       </button>
 
-      <button className="flex items-center gap-1 text-[13px] transition hover:text-[#38c5ca]">
+      <button onClick={()=> navigate("/posts/"+post._id) } className="flex items-center gap-1 text-[13px] transition hover:text-[#38c5ca]">
         <MessageCircle size={15} strokeWidth={1.5} />
         <span>{post.commentsCount}</span>
       </button>

@@ -9,6 +9,7 @@ class AuthServices {
             "https://route-posts.routemisr.com/users/signup",
             registerData,
         );
+        
         return data;
     }
 
@@ -17,6 +18,8 @@ class AuthServices {
             "https://route-posts.routemisr.com/users/signin",
             loginData,
         );
+            
+
         return data;
     }
 async getUserData() {
