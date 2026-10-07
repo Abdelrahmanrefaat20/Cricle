@@ -1,11 +1,20 @@
 import { Button } from "@heroui/react";
 import type { SuggestionI } from "../interfaces/SuggestionI";
+import { useContext } from "react";
+import { counterContext } from "../contexts/counterContext";
 
 export default function WhoToFollow({
   suggestions,
+  handleFollow
 }: {
   suggestions: SuggestionI[];
-}) {
+  handleFollow: (suggestionId: string) => void;
+
+})
+ 
+
+ {
+    const {follow} = useContext(counterContext)
   return (
     <div className="fixed top-5 rounded-2xl border border-[#243a38] bg-[#0e1d1b] p-4 mt-20">
       <h2 className="mb-3 text-[16px] font-bold text-[#f2f5f4]">
@@ -39,14 +48,14 @@ export default function WhoToFollow({
             <Button
               size="sm"
               radius="full"
-              // onPress={() => handleFollow(suggestion._id)}
+              onPress={() => handleFollow(suggestion._id)}
               className={
-                suggestion.following
+                follow.includes(suggestion._id)
                   ? "h-9 min-w-27 border border-[#29403e] bg-transparent px-4 text-[13px] font-semibold text-[#d7e2e0]"
                   : "h-9 min-w-21 bg-[#39c2c6] px-4 text-[13px] font-semibold text-[#07100f]"
               }
             >
-              {suggestion.following ? "Following" : "Follow"}
+               {follow.includes(suggestion._id) ? "Following" : "Follow"}
             </Button>
           </div>
         ))}

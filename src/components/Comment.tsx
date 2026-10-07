@@ -13,7 +13,6 @@ import { authContext } from "../contexts/authContext";
 
 export default function Comment({
   comment,
-  createComment,
   post,
   deleteComment,
   editComment,
@@ -30,23 +29,23 @@ export default function Comment({
 }) {
   const { userData } = useContext(authContext);
 
-  const [commentContent, setcommentContent] = useState("");
+  // const [commentContent, setcommentContent] = useState("");
   const [commentContentEdit, setCommentContentEdit] = useState(
     comment?.content || "",
   );
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [isLoadingCommentEdit, setIsLoadingCommentEdit] = useState(false);
   const [editMode, setEditMode] = useState(false);
 
-  async function handelCreateComment(e: any) {
-    e.preventDefault();
-    setIsLoading(true);
-    const formData = new FormData();
-    formData.set("content", commentContent);
-    await createComment(post._id, formData);
-    setIsLoading(false);
-    setcommentContent("");
-  }
+  // async function handelCreateComment(e: any) {
+  //   e.preventDefault();
+  //   setIsLoading(true);
+  //   const formData = new FormData();
+  //   formData.set("content", commentContent);
+  //   await createComment(post._id, formData);
+  //   setIsLoading(false);
+  //   setcommentContent("");
+  // }
 
   async function handelEditComment(e: any) {
     e.preventDefault();

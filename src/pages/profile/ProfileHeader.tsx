@@ -16,13 +16,14 @@ import { useState } from "react";
 import type { ChangePasswordData } from "../../types/loginDate";
 import profileService from "../../services/profileService";
 
-
 export default function ProfileHeader({
   profile,
   onPhotoUpdated,
+  getProfile,
 }: {
   profile: any;
   onPhotoUpdated?: () => void;
+  getProfile: () => Promise<void>;
 }) {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const {
@@ -60,6 +61,7 @@ export default function ProfileHeader({
       const formData = new FormData();
       formData.set("photo", imgfile);
       await profileService.updateProfilePhote(formData);
+      getProfile();
       removeFile();
       onPhotoUpdated?.();
       onClose();
@@ -77,6 +79,10 @@ export default function ProfileHeader({
     try {
       setIsLoading(true);
       await profileService.changePassowrd(dataPassword);
+      getProfile();
+      setPassword("");
+      setNewPassword("");
+      onPassOpenChange();
     } catch (error) {
       console.log(error);
       setIsLoading(false);

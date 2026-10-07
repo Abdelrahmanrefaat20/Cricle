@@ -14,6 +14,7 @@ export default function PostDetilas() {
   const [comments, setcomments] = useState<CommentI[]>([]);
   async function getPostData() {
     if (postId) {
+      isLoading && setIsLoading(true);
       const { data } = await postsService.getPostDetilas(postId);
       setpost(data.post);
       getCommentsPost();
@@ -28,7 +29,8 @@ export default function PostDetilas() {
     getPostData();
   }
 
-  const { setBookmarked,  setLiked } =
+  const { setBookmarked,  setLiked , setFollow
+   } =
     useContext(counterContext);
 
   async function likePost(postId: string) {
@@ -84,7 +86,23 @@ export default function PostDetilas() {
       setcomments(response.data.comments);
     }
   }
+    async function editPost(postId: string, formData: FormData) {
+    await postsService.editPost(postId, formData);
+    await getPostData();
+  }
+  async function handleFollow(userId: string) {
+    try {
+      await postsService.followUser(userId);
 
+      setFollow((prev: any[]) =>
+        prev.includes(userId)
+          ? prev.filter((id) => id !== userId)
+          : [...prev, userId],
+      );
+    } catch (error) {
+      console.error("Follow error:", error);
+    }
+  }
   return (
     <div className="min-h-screen bg-[#091412] px-4 py-5">
       <div className="mx-auto grid max-w-275 grid-cols-1 gap-3 lg:grid-cols-[1fr_100px]">
@@ -101,6 +119,8 @@ export default function PostDetilas() {
               deleteComment={deleteComment}
               editComment={editComment}
               comments={comments}
+              editPost={editPost}
+              handleFollow={handleFollow}
             />
           )}
         </main>

@@ -1,10 +1,9 @@
 import axios from "axios";
 import type {
-  CreateCommentResponse,
-  DeleteCommentResponse,
-  GetPostCommentsResponse,
+    CreateCommentResponse,
+    DeleteCommentResponse,
+    GetPostCommentsResponse,
 } from "../types/respone";
-import type { CommentI } from "../interfaces/commentI";
 
 class CommentService {
   async createComment(

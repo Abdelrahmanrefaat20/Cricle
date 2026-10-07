@@ -12,7 +12,7 @@ export default function NotFound() {
           {/* Logo */}
           <div className="mb-10">
             <h1 className="text-3xl font-extrabold tracking-[-0.03em] text-[#3cc4c2]">
-              Tidewell
+              CIRCLE
             </h1>
           </div>
 
@@ -69,7 +69,7 @@ export default function NotFound() {
 
           {/* Footer */}
           <p className="mt-6 text-xs text-[#5b6d6a]">
-            Tidewell · Stay connected with your people
+            CIRCLE · Stay connected with your people
           </p>
         </div>
       </div>

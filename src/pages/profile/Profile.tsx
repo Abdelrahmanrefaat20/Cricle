@@ -10,16 +10,15 @@ import commentService from "../../services/commentsServices";
 
 export default function Profile() {
   const { profile, setProfile } = useContext(counterContext);
-
-  useEffect(() => {
-    async function getProfile() {
-      try {
-        const res = await authServices.getUserData();
-        setProfile(res.data.user); // adjust to your real response shape
-      } catch (error) {
-        console.error(error);
-      }
+  async function getProfile() {
+    try {
+      const res = await authServices.getUserData();
+      setProfile(res.data.user); // adjust to your real response shape
+    } catch (error) {
+      console.error(error);
     }
+  }
+  useEffect(() => {
     getProfile();
   }, []);
 
@@ -86,9 +85,14 @@ export default function Profile() {
     await commentService.editComment(postId, commentId, formData);
     await getUserPosts();
   }
+
+    async function editPost(postId: string, formData: FormData) {
+    await postsService.editPost(postId, formData);
+    await getUserPosts();
+  }
   return (
     <div className="mx-auto mt-5 min-h-screen w-full max-w-275 px-4">
-      <ProfileHeader profile={profile} />
+      <ProfileHeader profile={profile} getProfile={getProfile} />
 
       <div className="mt-4 grid gap-4">
         {posts.map((post) => (
@@ -102,6 +106,7 @@ export default function Profile() {
             createComment={createComment}
             deleteComment={deleteComment}
             editComment={editComment}
+            editPost={editPost}
           />
         ))}
       </div>

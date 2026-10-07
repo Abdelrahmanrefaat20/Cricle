@@ -17,18 +17,26 @@ export default function Feed() {
   }, []);
   async function getAllPosts() {
     const { data } = await postsService.getAllPosts();
+
     setposts(data.posts);
   }
 
   async function deletePost(postId: string) {
-     await postsService.deletePost(postId);
+    await postsService.deletePost(postId);
     getAllPosts();
   }
 
-  const {   setBookmarked , suggestions, setSuggestions ,  setLiked  } = useContext(counterContext);
+  const {
+    setBookmarked,
+    suggestions,
+    setSuggestions,
+    setLiked,
+    setFollow,
+    Follow,
+  } = useContext(counterContext);
 
   async function likePost(postId: string) {
-     await postsService.likePost(postId);
+    await postsService.likePost(postId);
     setLiked((prev: string[]) =>
       !prev.includes(postId)
         ? [...prev, postId]
@@ -37,7 +45,7 @@ export default function Feed() {
     getAllPosts();
   }
   async function bookMark(postId: string) {
-     await postsService.bookMark(postId);
+    await postsService.bookMark(postId);
     setBookmarked((prev: string[]) =>
       !prev.includes(postId)
         ? [...prev, postId]
@@ -58,28 +66,46 @@ export default function Feed() {
   async function whoToFollow() {
     const response = await postsService.whoToFollow();
     setSuggestions(response.data.suggestions);
+    console.log(response);
+
     getAllPosts();
   }
 
-  // async function handleFollow(suggestionId: string) {
-  //   const response = await postsService.followUser(suggestionId);
-  //   setFollow((prev) => [...prev, response.data.user]);
-  // } 
+  async function handleFollow(userId: string) {
+    try {
+      await postsService.followUser(userId);
 
+      setFollow((prev: any[]) =>
+        prev.includes(userId)
+          ? prev.filter((id) => id !== userId)
+          : [...prev, userId],
+      );
+    } catch (error) {
+      console.error("Follow error:", error);
+    }
+  }
 
-  async function  createComment( postId: string, formData: FormData) {
+  async function createComment(postId: string, formData: FormData) {
     await commentService.createComment(postId, formData);
-         getAllPosts();
-
+    getAllPosts();
   }
 
-  async function deleteComment(postId: string , commentId:string) {
-    await commentService.deleteComment(postId,commentId)
-     getAllPosts();
+  async function deleteComment(postId: string, commentId: string) {
+    await commentService.deleteComment(postId, commentId);
+    getAllPosts();
   }
-  async function editComment(postId: string ,  commentId:string , formData:FormData) {
-    await commentService.editComment(postId,commentId , formData)
-   await  getAllPosts();
+  async function editComment(
+    postId: string,
+    commentId: string,
+    formData: FormData,
+  ) {
+    await commentService.editComment(postId, commentId, formData);
+    await getAllPosts();
+  }
+
+  async function editPost(postId: string, formData: FormData) {
+    await postsService.editPost(postId, formData);
+    await getAllPosts();
   }
 
   return (
@@ -88,7 +114,6 @@ export default function Feed() {
         <div className="mx-auto grid max-w-275 grid-cols-1 gap-3 lg:grid-cols-[1fr_100px]">
           {/* Posts */}
           <main className="min-w-0">
-
             <CreatePost getAllPosts={getAllPosts} />
 
             <div className="mt-4 grid gap-4">
@@ -103,14 +128,19 @@ export default function Feed() {
                   createComment={createComment}
                   deleteComment={deleteComment}
                   editComment={editComment}
+                  handleFollow={handleFollow}
+                  editPost={editPost}
                 />
-              ))}                             
+              ))}
             </div>
           </main>
 
           {/* Right sidebar */}
           <aside className="hidden lg:block">
-            <WhoToFollow suggestions={suggestions} /*handleFollow={handleFollow}*/   />
+            <WhoToFollow
+              suggestions={suggestions}
+              handleFollow={handleFollow}
+            />
           </aside>
         </div>
       </div>
