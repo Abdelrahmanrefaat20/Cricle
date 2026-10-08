@@ -17,7 +17,7 @@ export default function CreatePost({ getAllPosts }: { getAllPosts: any }) {
 
   const { userData } = useContext(authContext);
 
-
+getAllPosts
 const { mutate } = useMutation({
   mutationFn: createPost,
 
