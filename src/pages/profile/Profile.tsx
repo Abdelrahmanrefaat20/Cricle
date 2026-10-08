@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import Post from "../../components/Post/Post";
-import { counterContext } from "../../contexts/counterContext";
+import { counterContext } from "../../contexts/CounterContext";
 import type { PostI } from "../../interfaces/postI";
 import { authServices } from "../../services/authService";
 import postsService from "../../services/postService";

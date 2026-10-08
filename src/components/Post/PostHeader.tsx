@@ -14,9 +14,9 @@ import {
 } from "@heroui/react";
 import { Ellipsis, ImagePlus, X } from "lucide-react";
 import { useContext, useState } from "react";
-import { authContext } from "../../contexts/authContext";
+import { authContext } from "../../contexts/AuthContext";
 import type { PostI } from "../../interfaces/postI";
-import { counterContext } from "../../contexts/counterContext";
+import { counterContext } from "../../contexts/CounterContext";
 
 export default function PostHeader({
   post,

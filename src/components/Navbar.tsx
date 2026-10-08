@@ -11,7 +11,7 @@ import {
 } from "@heroui/react";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { authContext } from "../contexts/authContext";
+import { authContext } from "../contexts/AuthContext";
 // import { counterContext } from "../contexts/CounterContext";
 
 

@@ -9,7 +9,7 @@ import {
 import { useContext, useState } from "react";
 import type { CommentI } from "../interfaces/commentI";
 import { Ellipsis } from "lucide-react";
-import { authContext } from "../contexts/authContext";
+import { authContext } from "../contexts/AuthContext";
 
 export default function Comment({
   comment,

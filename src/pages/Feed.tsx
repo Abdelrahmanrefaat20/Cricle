@@ -4,7 +4,7 @@ import { useContext } from "react";
 import LoadingScreen from "../components/LoadingScreen";
 import CreatePost from "../components/Post/CreatePost";
 import Post from "../components/Post/Post";
-import { counterContext } from "../contexts/counterContext";
+import { counterContext } from "../contexts/CounterContext";
 import type { PostI } from "../interfaces/postI";
 import commentService from "../services/commentsServices";
 import postsService from "../services/postService";

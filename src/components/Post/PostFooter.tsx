@@ -1,6 +1,6 @@
 import { Bookmark, Heart, MessageCircle, Share2 } from "lucide-react";
 import { useContext } from "react";
-import { counterContext } from "../../contexts/counterContext";
+import { counterContext } from "../../contexts/CounterContext";
 import type { PostI } from "../../interfaces/postI";
 import { useNavigate } from "react-router-dom";
 

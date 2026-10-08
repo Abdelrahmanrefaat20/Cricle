@@ -1,6 +1,6 @@
 import { useContext, type ReactElement } from "react";
 import { Navigate } from "react-router-dom";
-import { authContext } from "../contexts/authContext";
+import { authContext } from "../contexts/AuthContext";
 
 export default function ProtectedAuthRoute({
   children,

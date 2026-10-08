@@ -2,8 +2,8 @@ import { HeroUIProvider } from "@heroui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider } from "react-router-dom";
 import "./App.css";
-import AuthContextProvider from "./contexts/authContext";
-import CounterContextProvider from "./contexts/counterContext";
+import AuthContextProvider from "./contexts/AuthContext";
+import CounterContextProvider from "./contexts/CounterContext";
 import { router } from "./routes/AppRoutes";
 export const queryClient = new QueryClient();
 function App() {

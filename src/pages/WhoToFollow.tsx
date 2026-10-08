@@ -1,7 +1,7 @@
 import { Button } from "@heroui/react";
 import type { SuggestionI } from "../interfaces/SuggestionI";
 import { useContext } from "react";
-import { counterContext } from "../contexts/counterContext";
+import { counterContext } from "../contexts/CounterContext";
 
 export default function WhoToFollow({
   suggestions,

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { counterContext } from "../../contexts/counterContext";
+import { counterContext } from "../../contexts/CounterContext";
 import type { PostI } from "../../interfaces/postI";
 import commentService from "../../services/commentsServices";
 import postsService from "../../services/postService";

@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { ImagePlus } from "lucide-react";
 import { useContext, useState } from "react";
 import { queryClient } from "../../App";
-import { authContext } from "../../contexts/authContext";
+import { authContext } from "../../contexts/AuthContext";
 import postsService from "./../../services/postService";
 
 export default function CreatePost({ getAllPosts }: { getAllPosts: any }) {
