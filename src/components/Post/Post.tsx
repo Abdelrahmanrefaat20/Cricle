@@ -48,6 +48,8 @@ export default function Post({
         sharePost={sharePost}
       />
 
+      
+
         <CommentFooter postId={post._id}  createComment={createComment}/>
 
       {comments && comments.length > 0

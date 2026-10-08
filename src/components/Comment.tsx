@@ -29,23 +29,13 @@ export default function Comment({
 }) {
   const { userData } = useContext(authContext);
 
-  // const [commentContent, setcommentContent] = useState("");
-  const [commentContentEdit, setCommentContentEdit] = useState(
+   const [commentContentEdit, setCommentContentEdit] = useState(
     comment?.content || "",
   );
-  // const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingCommentEdit, setIsLoadingCommentEdit] = useState(false);
+   const [isLoadingCommentEdit, setIsLoadingCommentEdit] = useState(false);
   const [editMode, setEditMode] = useState(false);
 
-  // async function handelCreateComment(e: any) {
-  //   e.preventDefault();
-  //   setIsLoading(true);
-  //   const formData = new FormData();
-  //   formData.set("content", commentContent);
-  //   await createComment(post._id, formData);
-  //   setIsLoading(false);
-  //   setcommentContent("");
-  // }
+
 
   async function handelEditComment(e: any) {
     e.preventDefault();
@@ -58,37 +48,6 @@ export default function Comment({
   }
   return (
     <>
-
-          {/* <div>
-        <form
-          onSubmit={handelCreateComment}
-          className="ml-14 mt-4 flex items-center gap-3"
-        >
-          <Input
-            placeholder="Write a comment"
-            variant="bordered"
-            radius="lg"
-            value={commentContent}
-            onChange={(e) => setcommentContent(e.target.value)}
-            classNames={{
-              base: "auth-input-base",
-              label: "auth-input-label",
-              inputWrapper: "auth-input-wrapper",
-              input: "auth-input",
-            }}
-          />
-
-          <Button
-            disabled={commentContent.trim().length < 2}
-            type="submit"
-            isLoading={isLoading}
-            onPress={handelCreateComment}
-            className="h-10 min-w-19 bg-[#39c2c6] px-5 text-[13px] font-semibold text-[#07100f] hover:bg-[#46d0d3] rounded-full"
-          >
-            Send
-          </Button>
-        </form>
-      </div> */}
       {comment && (
         <>
           <div className="  my-4 ml-14 border-t border-[#243a38]" />
@@ -96,7 +55,7 @@ export default function Comment({
             <div className="flex gap-3">
               <img
                 src={comment.commentCreator.photo}
-                alt=""
+                alt={comment.commentCreator.name}
                 className="h-11 w-11 shrink-0 rounded-3xl object-cover"
               />
 
@@ -189,8 +148,7 @@ export default function Comment({
 
                 <DropdownMenu
                   aria-label="Post actions"
-                  // onAction={handleAction}
-                >
+                 >
                   <DropdownItem key="edit" onClick={() => setEditMode(true)}>
                     Edit
                   </DropdownItem>

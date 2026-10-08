@@ -84,7 +84,6 @@ export default function ProfileHeader({
       setNewPassword("");
       onPassOpenChange();
     } catch (error) {
-      console.log(error);
       setIsLoading(false);
     }
   }

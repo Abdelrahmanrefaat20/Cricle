@@ -72,7 +72,7 @@ class PostsService {
     const { data } = await axios.post(
       `https://route-posts.routemisr.com/posts`,
       {
-        body: `Shared @${post.user.username} ${post.body ? post.body : ""}`,
+        body: `Shared  @${post.user.username} ${post.body ? post.body : ""}`,
       },
       {
         headers: {
@@ -110,7 +110,6 @@ class PostsService {
   }
 
 async followUser(userId: string) {
-  console.log(userId);
   
   const { data } = await axios.put(
     `https://route-posts.routemisr.com/users/${userId}/follow`,
@@ -121,7 +120,6 @@ async followUser(userId: string) {
       },
     }
   );
-  console.log(data);
   
   return data;
 }
@@ -132,12 +130,9 @@ async editPost(postId:string ,  formData: FormData,){
       },
   })
 
-  console.log(data);
   return data
 
 }
-
-
 
 }
 const postsService = new PostsService();

@@ -1,6 +1,8 @@
 import { Button, Textarea } from "@heroui/react";
+import { useMutation } from "@tanstack/react-query";
 import { ImagePlus } from "lucide-react";
 import { useContext, useState } from "react";
+import { queryClient } from "../../App";
 import { authContext } from "../../contexts/authContext";
 import postsService from "./../../services/postService";
 
@@ -14,6 +16,23 @@ export default function CreatePost({ getAllPosts }: { getAllPosts: any }) {
   const [IsLoading, setIsLoading] = useState(false);
 
   const { userData } = useContext(authContext);
+
+
+const { mutate } = useMutation({
+  mutationFn: createPost,
+
+  onSuccess: () => {
+    removeFile();
+    setCaption("");
+    setShowForm(false);
+    setIsLoading(false);
+
+    queryClient.invalidateQueries({
+      queryKey: ["posts"],
+      type : 'active'
+    });
+  },
+});
 
   function handelImageChnage(e: any) {
     const imgfile = e.target.files?.[0];
@@ -44,17 +63,16 @@ export default function CreatePost({ getAllPosts }: { getAllPosts: any }) {
 
      await postsService.createPost(formData);
 
-    removeFile();
-    setCaption("");
-    setShowForm(false);
-    setIsLoading(false);
-    getAllPosts();
+   
   }
+
+
+  
 
   return (
     <div className="w-full max-w-138 rounded-2xl border border-[#243a38] bg-[#0e1d1b] p-4 text-white mx-auto my-5">
       {showForm ? (
-        <form onSubmit={createPost}>
+        <form onSubmit={mutate}>
           <div className="flex gap-3">
             <img
               src={userData?.photo}

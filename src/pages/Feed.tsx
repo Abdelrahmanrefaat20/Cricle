@@ -1,39 +1,45 @@
-import { useContext, useEffect, useState } from "react";
-import postsService from "../services/postService";
-import type { PostI } from "../interfaces/postI";
-import Post from "../components/Post/Post";
+import { useQuery } from "@tanstack/react-query";
+import { useContext, useEffect } from "react";
 import CreatePost from "../components/Post/CreatePost";
+import Post from "../components/Post/Post";
 import { counterContext } from "../contexts/counterContext";
-import WhoToFollow from "./WhoToFollow";
+import type { PostI } from "../interfaces/postI";
 import commentService from "../services/commentsServices";
+import postsService from "../services/postService";
+import WhoToFollow from "./WhoToFollow";
+import LoadingScreen from "../components/LoadingScreen";
+import { Spinner } from "@heroui/react";
 
 export default function Feed() {
-  const [posts, setposts] = useState<PostI[]>([]);
+  const {
+    data: posts = [],
+    isLoading,isFetching,
+    refetch: refetchPosts,
+  } = useQuery({
+    queryKey: ["posts"],
+    queryFn: postsService.getAllPosts,
+    select: (data) => data.data.posts,
+    staleTime: 30_000 ,
+    // refetchInterval: 30_000,
+    refetchOnReconnect: true,
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
+    retry: 3,
+    retryDelay: 3000,
+  });
 
-  useEffect(() => {
-    // get posts
-    getAllPosts();
-    whoToFollow();
-  }, []);
-  async function getAllPosts() {
-    const { data } = await postsService.getAllPosts();
-
-    setposts(data.posts);
-  }
+  const { data: whoToFollow = [] } = useQuery({
+    queryKey: ["WhoToFollow"],
+    queryFn: postsService.whoToFollow,
+    select: (data) => data.data.suggestions,
+  });
 
   async function deletePost(postId: string) {
     await postsService.deletePost(postId);
-    getAllPosts();
+    refetchPosts();
   }
 
-  const {
-    setBookmarked,
-    suggestions,
-    setSuggestions,
-    setLiked,
-    setFollow,
-    Follow,
-  } = useContext(counterContext);
+  const { setBookmarked, setLiked, setFollow } = useContext(counterContext);
 
   async function likePost(postId: string) {
     await postsService.likePost(postId);
@@ -42,7 +48,7 @@ export default function Feed() {
         ? [...prev, postId]
         : prev.filter((id) => id !== postId),
     );
-    getAllPosts();
+    refetchPosts();
   }
   async function bookMark(postId: string) {
     await postsService.bookMark(postId);
@@ -51,25 +57,19 @@ export default function Feed() {
         ? [...prev, postId]
         : prev.filter((id) => id !== postId),
     );
-    getAllPosts();
+
+    refetchPosts();
   }
 
   const handleShare = async (post: PostI) => {
     try {
       await postsService.sharePost(post);
-      getAllPosts();
+
+      refetchPosts();
     } catch (error) {
       console.error(error);
     }
   };
-
-  async function whoToFollow() {
-    const response = await postsService.whoToFollow();
-    setSuggestions(response.data.suggestions);
-    console.log(response);
-
-    getAllPosts();
-  }
 
   async function handleFollow(userId: string) {
     try {
@@ -87,12 +87,13 @@ export default function Feed() {
 
   async function createComment(postId: string, formData: FormData) {
     await commentService.createComment(postId, formData);
-    getAllPosts();
+
+    refetchPosts();
   }
 
   async function deleteComment(postId: string, commentId: string) {
     await commentService.deleteComment(postId, commentId);
-    getAllPosts();
+    refetchPosts();
   }
   async function editComment(
     postId: string,
@@ -100,45 +101,57 @@ export default function Feed() {
     formData: FormData,
   ) {
     await commentService.editComment(postId, commentId, formData);
-    await getAllPosts();
+    refetchPosts();
   }
 
   async function editPost(postId: string, formData: FormData) {
     await postsService.editPost(postId, formData);
-    await getAllPosts();
+    refetchPosts();
   }
 
   return (
     <>
       <div className="min-h-screen bg-[#091412] px-4 py-5">
-        <div className="mx-auto grid max-w-275 grid-cols-1 gap-3 lg:grid-cols-[1fr_100px]">
+        <div className="mx-auto grid max-w-275 grid-cols-1 gap-1 lg:grid-cols-[1fr_100px]">
           {/* Posts */}
           <main className="min-w-0">
-            <CreatePost getAllPosts={getAllPosts} />
+
+               {isFetching && !isLoading && (
+          <div className="fixed bg-[#07100f] border border-[#29403e] px-6 py-3 shadow-2xl rounded-4xl inset-s-1/2 -translate-1/2 mt-2">
+            <Spinner color="success" size="sm" />
+          </div>
+        )}
+            <CreatePost getAllPosts={refetchPosts} />
 
             <div className="mt-4 grid gap-4">
-              {posts.map((post) => (
-                <Post
-                  key={post._id}
-                  post={post}
-                  deletePost={deletePost}
-                  likePost={likePost}
-                  bookMark={bookMark}
-                  sharePost={handleShare}
-                  createComment={createComment}
-                  deleteComment={deleteComment}
-                  editComment={editComment}
-                  handleFollow={handleFollow}
-                  editPost={editPost}
-                />
-              ))}
+              {isLoading ? (
+                <LoadingScreen />
+              ) : (
+                <>
+                  {posts.map((post) => (
+                    <Post
+                      key={post._id}
+                      post={post}
+                      deletePost={deletePost}
+                      likePost={likePost}
+                      bookMark={bookMark}
+                      sharePost={handleShare}
+                      createComment={createComment}
+                      deleteComment={deleteComment}
+                      editComment={editComment}
+                      handleFollow={handleFollow}
+                      editPost={editPost}
+                    />
+                  ))}
+                </>
+              )}
             </div>
           </main>
 
           {/* Right sidebar */}
           <aside className="hidden lg:block">
             <WhoToFollow
-              suggestions={suggestions}
+              suggestions={whoToFollow}
               handleFollow={handleFollow}
             />
           </aside>

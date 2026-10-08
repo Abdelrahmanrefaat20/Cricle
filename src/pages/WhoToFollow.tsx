@@ -16,7 +16,7 @@ export default function WhoToFollow({
  {
     const {follow} = useContext(counterContext)
   return (
-    <div className="fixed top-5 rounded-2xl border border-[#243a38] bg-[#0e1d1b] p-4 mt-20">
+    <div className="fixed top-5 rounded-2xl border border-[#243a38] bg-[#0e1d1b] p-4 mt-20   inset-e-25">
       <h2 className="mb-3 text-[16px] font-bold text-[#f2f5f4]">
         Who to follow
       </h2>

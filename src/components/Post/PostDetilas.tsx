@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { counterContext } from "../../contexts/counterContext";
 import type { PostI } from "../../interfaces/postI";
 import commentService from "../../services/commentsServices";
@@ -12,6 +12,7 @@ export default function PostDetilas() {
   const [post, setpost] = useState<PostI>();
   const [isLoading, setIsLoading] = useState(true);
   const [comments, setcomments] = useState<CommentI[]>([]);
+  const  navigate= useNavigate()
   async function getPostData() {
     if (postId) {
       isLoading && setIsLoading(true);
@@ -26,7 +27,9 @@ export default function PostDetilas() {
   }, []);
   async function deletePost(postId: string) {
     await postsService.deletePost(postId);
-    getPostData();
+    navigate("/" , {
+      replace: true
+    })
   }
 
   const { setBookmarked,  setLiked , setFollow

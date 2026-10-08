@@ -35,7 +35,6 @@ class CommentService {
         },
       },
     );
-    console.log(data);
 
     return data;
   }

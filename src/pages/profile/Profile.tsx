@@ -13,7 +13,7 @@ export default function Profile() {
   async function getProfile() {
     try {
       const res = await authServices.getUserData();
-      setProfile(res.data.user); // adjust to your real response shape
+      setProfile(res.data.user);
     } catch (error) {
       console.error(error);
     }
@@ -28,7 +28,7 @@ export default function Profile() {
     if (!profile?.id) return;
     try {
       const res = await profileService.getUserPosts(profile.id);
-      setPosts(res.data.posts); // adjust to your real response shape
+      setPosts(res.data.posts);
     } catch (error) {
       console.error(error);
     }
@@ -72,9 +72,11 @@ export default function Profile() {
   };
   async function createComment(postId: string, formData: FormData) {
     await commentService.createComment(postId, formData);
+    getUserPosts();
   }
   async function deleteComment(postId: string, commentId: string) {
     await commentService.deleteComment(postId, commentId);
+    getUserPosts();
   }
 
   async function editComment(
@@ -86,7 +88,7 @@ export default function Profile() {
     await getUserPosts();
   }
 
-    async function editPost(postId: string, formData: FormData) {
+  async function editPost(postId: string, formData: FormData) {
     await postsService.editPost(postId, formData);
     await getUserPosts();
   }
