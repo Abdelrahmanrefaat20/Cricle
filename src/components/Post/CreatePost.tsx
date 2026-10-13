@@ -1,7 +1,7 @@
 import { Button, Textarea } from "@heroui/react";
 import { useMutation } from "@tanstack/react-query";
-import { ImagePlus } from "lucide-react";
-import { useContext, useState } from "react";
+import { ImagePlus, X } from "lucide-react";
+import { useContext, useRef, useState } from "react";
 import { queryClient } from "../../App";
 import { authContext } from "../../contexts/AuthContext";
 import postsService from "./../../services/postService";
@@ -16,23 +16,23 @@ export default function CreatePost({ getAllPosts }: { getAllPosts: any }) {
   const [IsLoading, setIsLoading] = useState(false);
 
   const { userData } = useContext(authContext);
+  const fileInput = useRef<HTMLInputElement>(null);
+  getAllPosts;
+  const { mutate } = useMutation({
+    mutationFn: createPost,
 
-getAllPosts
-const { mutate } = useMutation({
-  mutationFn: createPost,
+    onSuccess: () => {
+      removeFile();
+      setCaption("");
+      setShowForm(false);
+      setIsLoading(false);
 
-  onSuccess: () => {
-    removeFile();
-    setCaption("");
-    setShowForm(false);
-    setIsLoading(false);
-
-    queryClient.invalidateQueries({
-      queryKey: ["posts"],
-      type : 'active'
-    });
-  },
-});
+      queryClient.invalidateQueries({
+        queryKey: ["posts"],
+        type: "active",
+      });
+    },
+  });
 
   function handelImageChnage(e: any) {
     const imgfile = e.target.files?.[0];
@@ -48,6 +48,7 @@ const { mutate } = useMutation({
   function removeFile() {
     setImgfile(null);
     setImagePreview(null);
+    fileInput.current!.value = "";
   }
 
   async function createPost(e: any) {
@@ -61,13 +62,8 @@ const { mutate } = useMutation({
       formData.set("image", imgfile);
     }
 
-     await postsService.createPost(formData);
-
-   
+    await postsService.createPost(formData);
   }
-
-
-  
 
   return (
     <div className="w-full max-w-138 rounded-2xl border border-[#243a38] bg-[#0e1d1b] p-4 text-white mx-auto my-5">
@@ -110,7 +106,9 @@ const { mutate } = useMutation({
                     radius="full"
                     onPress={removeFile}
                     className="absolute right-2 top-2 bg-black/70 text-white hover:text-red-500 hover:bg-red-500/30"
-                  ></Button>
+                  >
+                    <X size={18} />
+                  </Button>
                 </div>
               )}
 
@@ -122,6 +120,7 @@ const { mutate } = useMutation({
 
                   <input
                     id="fileInput"
+                    ref={fileInput}
                     type="file"
                     accept="image/*"
                     onChange={handelImageChnage}

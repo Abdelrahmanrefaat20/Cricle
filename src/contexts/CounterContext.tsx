@@ -7,6 +7,8 @@ export default function CounterContextProvider({
 }: {
   children: ReactElement;
 }) {
+  const [profile, setProfile] = useState<any>(null);
+
   const [counter, setcounter] = useState(0);
   const [liked, setLiked] = useState<string[]>(() => {
     try {
@@ -16,9 +18,7 @@ export default function CounterContextProvider({
       return [];
     }
   });
-  //  useEffect(() => {
-  //   localStorage.setItem("likedPosts", JSON.stringify(liked));
-  // }, [liked]);
+
   const [bookmarked, setBookmarked] = useState<string[]>(() => {
     try {
       const saved = localStorage.getItem("bookmarkedPosts");
@@ -27,9 +27,7 @@ export default function CounterContextProvider({
       return [];
     }
   });
-  //  useEffect(() => {
-  //   localStorage.setItem("bookmarkedPosts", JSON.stringify(bookmarked));
-  // }, [bookmarked]);
+
   const [suggestions, setSuggestions] = useState<SuggestionI[]>([]);
   const [follow, setFollow] = useState<string[]>(() => {
     try {
@@ -40,11 +38,27 @@ export default function CounterContextProvider({
     }
   });
   useEffect(() => {
-    localStorage.setItem("followedUsers", JSON.stringify(follow));
-    localStorage.setItem("likedPosts", JSON.stringify(liked));
-    localStorage.setItem("bookmarkedPosts", JSON.stringify(bookmarked));
-  }, [follow, liked, bookmarked]);
-  const [profile, setProfile] = useState<any>(null);
+    if (!profile?.id) return;
+
+    const followedUsers = follow.map((userId) => ({
+      userId: profile.id,
+      followedId: userId,
+    }));
+
+    const likedPosts = liked.map((postId) => ({
+      userId: profile.id,
+      postId,
+    }));
+
+    const bookmarkedPosts = bookmarked.map((postId) => ({
+      userId: profile.id,
+      postId,
+    }));
+
+    localStorage.setItem("followedUsers", JSON.stringify(followedUsers));
+    localStorage.setItem("likedPosts", JSON.stringify(likedPosts));
+    localStorage.setItem("bookmarkedPosts", JSON.stringify(bookmarkedPosts));
+  }, [follow, liked, bookmarked, profile?.id]);
   return (
     <counterContext.Provider
       value={{

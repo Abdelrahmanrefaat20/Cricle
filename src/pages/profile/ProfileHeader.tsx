@@ -12,7 +12,7 @@ import {
   useDisclosure,
 } from "@heroui/react";
 import { Ellipsis, ImagePlus } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { ChangePasswordData } from "../../types/loginDate";
 import profileService from "../../services/profileService";
 
@@ -37,6 +37,7 @@ export default function ProfileHeader({
   const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const profilePhotoInput = useRef<HTMLInputElement>(null);
   function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
     const selected = e.target.files?.[0];
     if (!selected) return;
@@ -50,6 +51,7 @@ export default function ProfileHeader({
   function removeFile() {
     setImgfile(null);
     setImagePreview(null);
+    profilePhotoInput.current!.value = "";
   }
 
   async function updatePhoto(e: React.FormEvent) {
@@ -175,6 +177,7 @@ export default function ProfileHeader({
               )}
 
               <input
+                ref={profilePhotoInput}
                 id="profilePhotoInput"
                 type="file"
                 onChange={handleImageChange}

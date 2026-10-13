@@ -13,7 +13,7 @@ import {
   useDisclosure,
 } from "@heroui/react";
 import { Ellipsis, ImagePlus, X } from "lucide-react";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { authContext } from "../../contexts/AuthContext";
 import type { PostI } from "../../interfaces/postI";
 import { counterContext } from "../../contexts/CounterContext";
@@ -52,11 +52,13 @@ export default function PostHeader({
     };
 
     reader.readAsDataURL(imgFile);
-  }
+  } 
+  const inputImage= useRef<HTMLInputElement>(null)
 
   function removeImage() {
     setImageFile(null);
     setPreview(null);
+    inputImage.current!.value=""
   }
 
   function resetForm() {
@@ -72,7 +74,9 @@ export default function PostHeader({
 
     try {
       setIsLoadingPostEdit(true);
-      await editPost(post._id, formData);
+     const res=  await editPost(post._id, formData);
+     console.log(res);
+     
       onClose();
     } finally {
       setIsLoadingPostEdit(false);
@@ -226,6 +230,7 @@ export default function PostHeader({
                         />
 
                         <Button
+                           ref={inputImage}
                           isIconOnly
                           size="sm"
                           onPress={removeImage}
