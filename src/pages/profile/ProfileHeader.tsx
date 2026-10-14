@@ -1,20 +1,20 @@
 import {
-  Button,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-  Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalHeader,
-  useDisclosure,
+    Button,
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownTrigger,
+    Input,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalHeader,
+    useDisclosure,
 } from "@heroui/react";
 import { Ellipsis, ImagePlus } from "lucide-react";
 import { useRef, useState } from "react";
-import type { ChangePasswordData } from "../../types/loginDate";
 import profileService from "../../services/profileService";
+import type { ChangePasswordData } from "../../types/loginDate";
 
 export default function ProfileHeader({
   profile,

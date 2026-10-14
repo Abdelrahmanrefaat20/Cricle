@@ -53,7 +53,7 @@ export default function PostHeader({
 
     reader.readAsDataURL(imgFile);
   } 
-  const inputImage= useRef<HTMLInputElement>(null)
+  const inputImage= useRef<HTMLButtonElement>(null)
 
   function removeImage() {
     setImageFile(null);
