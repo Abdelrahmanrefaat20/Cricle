@@ -35,7 +35,7 @@ export default function Post({
   editPost: (postId: string, formData: FormData) => Promise<void>;
 }) {
   return (
-    <article className="w-full max-w-138 rounded-2xl border border-[#243a38] bg-[#0e1d1b] p-4 text-white mx-auto">
+    <article className="w-full max-w-85  md:max-w-138 rounded-2xl border border-[#243a38] bg-[#0e1d1b] p-4 text-white mx-auto">
       {/* Post Header */}
       <PostHeader post={post} deletePost={deletePost} handleFollow={handleFollow} editPost={editPost}/>
 
