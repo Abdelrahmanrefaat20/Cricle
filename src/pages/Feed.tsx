@@ -112,7 +112,7 @@ export default function Feed() {
   return (
     <>
       <div className="min-h-screen bg-[#091412] px-4 py-5">
-        <div className="mx-auto grid max-w-275 grid-cols-1 gap-1 lg:grid-cols-[1fr_100px]">
+        <div className="mx-auto grid  grid-cols-1 gap-1 lg:grid-cols-[1fr_100px]">
           {/* Posts */}
           <main className="min-w-0">
 
