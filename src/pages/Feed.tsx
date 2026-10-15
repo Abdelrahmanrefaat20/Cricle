@@ -114,7 +114,7 @@ export default function Feed() {
       <div className="min-h-screen bg-[#091412] px-4 py-5  mx-auto mt-5  w-full max-w-275 ">
         <div className="mx-auto grid  grid-cols-1 gap-1 lg:grid-cols-[1fr_100px]">
           {/* Posts */}
-          <main className="min-w-0">
+          <main className="">
 
                {isFetching && !isLoading && (
           <div className="fixed bg-[#07100f] border border-[#29403e] px-6 py-3 shadow-2xl rounded-4xl inset-s-1/2 -translate-1/2 mt-2">
